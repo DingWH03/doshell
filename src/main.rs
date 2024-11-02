@@ -196,12 +196,13 @@ impl Shell {
                     self.run_batch_file(&batch_file_path.to_string_lossy());
                 } else {
                     // Otherwise, attempt to execute the command
-                    let cmd = cmd_path.to_str().unwrap_or(&args[0]);
-                    let result = Command::new(cmd)
-                        .args(&args[1..])
-                        .stdout(Stdio::inherit())
-                        .stderr(Stdio::inherit())
-                        .output();
+                    if let Some((cmd, cmd_args)) = args.split_first() {
+                        // 尝试执行外部命令
+                        let result = Command::new(cmd)
+                            .args(cmd_args)
+                            .stdout(Stdio::inherit())
+                            .stderr(Stdio::inherit())
+                            .output();
 
                     match result {
                         Ok(output) => {
@@ -212,6 +213,7 @@ impl Shell {
                             println!("Command not found or failed to execute: {}", e);
                         }
                     }
+                }
                 }
             }
             CommandType::Exit => {
