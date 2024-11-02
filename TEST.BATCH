@@ -1,0 +1,46 @@
+@echo off
+setlocal enabledelayedexpansion
+
+REM 设置初始变量
+set /a count=0
+set /a maxCount=5
+
+:Start
+echo 当前计数: !count!
+
+REM IF 语句示例
+if !count! lss !maxCount! (
+    echo 计数小于最大计数
+) else (
+    echo 计数达到了或超过最大计数
+)
+
+REM WHILE 循环示例（使用 GOTO 实现）
+:WhileLoop
+if !count! lss !maxCount! (
+    echo 计数: !count!
+    set /a count+=1
+    goto WhileLoop
+)
+
+REM FOR 循环示例
+echo.
+echo 使用 FOR 循环：
+for /l %%i in (1, 1, 5) do (
+    echo 第 %%i 次循环
+)
+
+REM SHIFT 示例
+set arg1=Hello
+set arg2=World
+echo.
+echo 原始参数: %arg1% %arg2%
+shift
+echo 移动参数后: %arg1% %arg2%
+
+REM GOTO 示例
+goto End
+
+:End
+echo 脚本结束
+endlocal
